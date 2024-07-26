@@ -62,9 +62,9 @@ app.put("/listings/:id",async(req,res)=>{
 
     await Listing.findByIdAndUpdate(id,{...req.body.Listing});
 
-    res.redirect(`/listings/${id}`); 
-})
-
+    res.redirect(`/listings/${id}`);  
+}) 
+ 
 // delete listing route
 app.delete("/listings/:id",async(req,res)=>{
     let {id}=req.params;
@@ -79,7 +79,9 @@ app.get("/listings/:id", async (req,res) =>{
     res.render("listings/show.ejs",{listing});
 }) 
 
-
+app.use((err, req,res , next)=>{
+    res.send("Something went wrong!!");
+})
 
 app.listen(8080 , () =>{
     console.log("listening to port 8080");
