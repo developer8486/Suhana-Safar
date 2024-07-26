@@ -4,11 +4,14 @@ const mongoose =require("mongoose");
 const Listing =require("./models/listings.js");
 const path =require("path");
 const methodOverride= require("method-override");
+const ejsMate= require("ejs-mate");
 
 app.set("view engine","ejs");
 app.set("views" ,path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
+app.engine("ejs",ejsMate); //ejs mate
+app.use(express.static(path.join(__dirname,"/public"))); //for css
 
 //mongoDB connection
 const MONGO_URL ="mongodb://127.0.0.1:27017/suhana_safar";
@@ -30,19 +33,19 @@ app.get("/",(req,res) =>{
     res.render("listings/index.ejs",{allListings});
  });
 
- //create new listing form route
+ //create new listing form, route
 app.get("/listings/new",(req,res)=>{  
     res.render("listings/newListing.ejs");
 })
 
 //add new listing in DB route
-app.post("/listinigs",async(req,res)=>{
+app.post("/listinigs",async(req,res)=>{ 
     //let {title ,  image , country ,location ,price,discription}=req.body;
     const newListing=new Listing(req.body.Listing);
     await newListing.save();
     res.redirect("/listings");
-})
- 
+}) 
+    
 //update form route
 app.get("/listings/:id/edit",async (req,res) =>{
     let {id} =req.params;
@@ -59,7 +62,7 @@ app.put("/listings/:id",async(req,res)=>{
 
     await Listing.findByIdAndUpdate(id,{...req.body.Listing});
 
-    res.redirect("/listings");
+    res.redirect(`/listings/${id}`); 
 })
 
 // delete listing route

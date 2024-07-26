@@ -1,23 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suhana-Safar | We name your Safar Suhana</title>
-</head>
-<body>
-     <h3>Listing details</h3>
+<% layout("/layouts/boilerplate") %>
+
+<div class="row">
+  <div class="col-8 offset-2 mt-3">
+
+     <h3 class="offset-2 mb-4">Listing details</h3>
+  </div>
+
+    <div class="card col-6 offset-3 show-card">
+        <img src="<%= listing.image %>" class="card-img-top show-img" alt="Listing image">
+        <div class="card-body">
+            <p class="card-text">
+              <b><%= listing.title %></b><br>
+              <%= listing.discription %><br>
+              &#8377;<%= Number(listing.price).toLocaleString("en-IN") %><br>
+              <%= listing.location %><br>
+              <%= listing.country %>
+
+            </p>
+        </div>
+    </div>
      
-     <ul>
-        <li><%= listing.title %></li>
-        <li><%= listing.discription %></li>
-        <li>&#8377;<%= Number(listing.price).toLocaleString("en-IN") %></li>
-        <li><%= listing.location %></li>
-        <li><%= listing.country %></li>
-     </ul>
-      <a href="/listings/<%=listing._id%>/edit">Edit listing</a>
-      <form method="post" action="/listings/<%=listing._id%>/?_method=DELETE">
-        <button>Delete!!!</button>
-      </form>
-</body>
-</html>
+    
+</div>
+
+<div class="btns">
+  <a href="/listings/<%=listing._id%>/edit" class="btn btn-primary col-1 offset-3">Edit</a>
+
+  <form method="post" action="/listings/<%=listing._id%>/?_method=DELETE">
+    <button class="btn btn-danger offset-4" style="margin-left: 27rem;"> Delete!!!</button>
+  </form>
+</div>
