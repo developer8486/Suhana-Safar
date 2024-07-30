@@ -8,6 +8,7 @@ const ejsMate= require("ejs-mate");
 const wrapAsync =require("./utils/wrapAsync.js");
 const expressError =require("./utils/expressError");
 const {listingSchema} =require("./schema.js");
+const Review =require ("./models/review.js");
 
 app.set("view engine","ejs");
 app.set("views" ,path.join(__dirname,"views"));
@@ -107,17 +108,31 @@ app.get("/listings/:id", wrapAsync(async(req,res) =>{
     res.render("listings/show.ejs",{listing});
 }) );
 
+//add review
+app.post("/listings/:id/reviews",async(req,res)=>{
+    let listing = await Listing.findById(req.params.id);
+    let newReview =new Review(req.body.review);
+
+    listing.reviews.push(newReview);
+    await newReview.save();
+    await listing.save();
+
+    console.log("new review saved");
+    res.send("new review saved");
+});
+
 //random route
 app.all("*",(req,res,next)=>{
     next(new expressError(404,"Page not found"));
 }) 
 
-app.use((err, req, res , next)=>{
+app.use((err, req, res , next)=>{ 
     let{statusCode=500 ,message="Something went wrong"}=err;
     res.render("error.ejs",{err});
     //res.status(statusCode).send(message);
 });
 
+
 app.listen(8080 , () =>{
     console.log("listening to port 8080");
-});     
+});
