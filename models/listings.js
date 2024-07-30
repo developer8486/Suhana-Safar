@@ -15,7 +15,7 @@ const listingSchema =new Schema({
          "https://c4.wallpaperflare.com/wallpaper/150/385/134/trees-design-house-lawn-wallpaper-preview.jpg" :v 
         },
         
-    price : String , 
+    price : Number , 
     location : String ,
     country : String,
 });
