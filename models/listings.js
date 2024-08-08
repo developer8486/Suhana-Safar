@@ -16,7 +16,7 @@ const listingSchema =new Schema({
          "https://c4.wallpaperflare.com/wallpaper/150/385/134/trees-design-house-lawn-wallpaper-preview.jpg" :v 
         },
         
-    price : Number , 
+    price : Number ,
     location : String ,
     country : String,
     reviews :[{ 
@@ -26,7 +26,7 @@ const listingSchema =new Schema({
 ],
 });
 
-listingSchema.post("findOneAndDelete" , async(listing) =>{
+listingSchema.post("findOneAndDelete" , async(listing) =>{//.post: This is a Mongoose middleware function that executes after a specific operation. In this case, it runs after the findOneAndDelete operation.
     if(listing){
         await Review.deleteMany({_id:{$in : listing.reviews}});
     }
