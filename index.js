@@ -28,8 +28,10 @@ const sessionOptions ={
     }
 }
 
+//require different routes
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
+const users = require("./routes/user.js");
 const { privateEncrypt } = require("crypto");
 
 app.set("view engine","ejs");
@@ -91,6 +93,8 @@ app.get("/fakeruser", async(req,res)  =>{
 app.use("/listings", listings);
 //using reviews express router review.js
 app.use("/listings/:id/reviews",reviews);
+//using express routes folder user.js
+app.use("/",users);
 
 //random route
 app.all("*",(req,res,next)=>{
