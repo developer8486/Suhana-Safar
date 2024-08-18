@@ -72,21 +72,12 @@ async function main(){
 
 
 //flash success
-app.use((req,res,next) =>{ 
-    res.locals.success=req.flash("success");
+app.use((req,res,next) =>{ //res.local jo hai wo veriable ko permanent store karwane k liyea use hota hai
+    res.locals.success=req.flash("success");//flase use to store the variable but on temproary basis
     res.locals.error=req.flash("error");
+    res.locals.currUser = req.user;
 
     next();
-})
-
-
-app.get("/fakeruser", async(req,res)  =>{
-    let fakeruserr= new user({
-        email: "skjhdgkjfhsdgk",
-        username: "praveen_dubey",
-    })
-    let newUser = await user.register(fakeruserr,"password");
-    res.send(newUser);
 })
 
 //using express routes folder listing.js

@@ -10,7 +10,7 @@ const userSchema = new schema({
     },
 });
 
-userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose);//for handling user registration, login, and session management
 
 const User = mongoose.model('User', userSchema);
 

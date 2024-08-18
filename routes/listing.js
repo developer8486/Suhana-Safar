@@ -5,6 +5,7 @@ const expressError =require("../utils/expressError");
 const {listingSchema} =require("../schema.js");
 const {reviewSchema} = require("../schema.js");
 const Listing =require("../models/listings.js");
+const {isLoggedIn} =require("../middleware.js");
 
 
    
@@ -29,7 +30,7 @@ router.get("/",wrapAsync(async (req,res)=>{
  }));
 
  //create new listing form, route
-router.get("/new",(req,res)=>{
+router.get("/new",isLoggedIn,(req,res)=>{
     res.render("listings/newListing.ejs");
 })
 
@@ -38,7 +39,7 @@ router.get("/new",(req,res)=>{
     let {id} =req.params;
     const listing = await Listing.findById(id).populate("reviews");
 
-    if(!listing){
+    if(!listing){ 
         req.flash("error","Listing not exist");
         res.redirect("/listings");
 
@@ -49,7 +50,7 @@ router.get("/new",(req,res)=>{
 
 
 //add new listing in DB route  
-router.post("/", validateListing , wrapAsync(async(req,res,next)=>{ 
+router.post("/", isLoggedIn,validateListing , wrapAsync(async(req,res,next)=>{ 
     //let {title ,  image , country ,location ,price,discription}=req.body;
     /*if(!req.body.Listing){
         throw new expressError(400,"Send valid data");
@@ -69,7 +70,7 @@ router.post("/", validateListing , wrapAsync(async(req,res,next)=>{
 })); 
     
 //update form route
-router.get("/:id/edit",wrapAsync(async (req,res) =>{
+router.get("/:id/edit",isLoggedIn,wrapAsync(async (req,res) =>{
     let {id} =req.params;
     const listing = await Listing.findById(id);
 
@@ -82,7 +83,7 @@ router.get("/:id/edit",wrapAsync(async (req,res) =>{
 }))
 
 //update in DB route
-router.put("/:id",validateListing,wrapAsync(async(req,res)=>{
+router.put("/:id",isLoggedIn,validateListing,wrapAsync(async(req,res)=>{
     
 
     let {id}= req.params;
@@ -96,7 +97,7 @@ router.put("/:id",validateListing,wrapAsync(async(req,res)=>{
 }) );
  
 // delete listing route
-router.delete("/:id",wrapAsync(async(req,res)=>{
+router.delete("/:id",isLoggedIn,wrapAsync(async(req,res)=>{
     let {id}=req.params;
     await Listing.findByIdAndDelete(id);
 
