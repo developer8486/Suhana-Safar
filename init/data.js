@@ -1,14 +1,7 @@
 
 
 const sampleListing =[
-    {
-        title: "Eiffel Tower",
-        discription: "A wrought-iron lattice tower on the Champ de Mars in Paris, France.",
-        location: "Champ de Mars, 5 Avenue Anatole France, 75007 Paris",
-        country: "France",
-        price:6000,
-        image: "https://a0.muscache.com/im/pictures/miso/Hosting-36774428/original/15110762-267f-4a08-88ae-2d9d3603284d.jpeg?im_w=1200"
-    },
+
         {
           title: "Eiffel Tower",
           discription: "A wrought-iron lattice tower on the Champ de Mars in Paris, France.",
@@ -47,7 +40,8 @@ const sampleListing =[
           location: "08680, Peru",
           country: "Peru",
           image: "https://cdn.britannica.com/56/140856-050-C408FFB6/Patio-de-los-Arrayanes-Alhambra-Spain-Granada.jpg",
-          price: 6000
+          price: 6000,
+          owner :"66c24382c47b733603cba55d",
         },
         {
           title: "Colosseum",

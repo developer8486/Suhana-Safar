@@ -22,8 +22,11 @@ const listingSchema =new Schema({
     reviews :[{ 
          type : Schema.Types.ObjectId,
          ref : "Review"
+    },],
+    owner:{
+        type : Schema.Types.ObjectId,
+        ref: "User"
     },
-],
 });
 
 listingSchema.post("findOneAndDelete" , async(listing) =>{//.post: This is a Mongoose middleware function that executes after a specific operation. In this case, it runs after the findOneAndDelete operation.
