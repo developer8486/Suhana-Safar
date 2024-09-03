@@ -28,6 +28,7 @@ const sessionOptions ={
     }
 }
 
+
 //require different routes
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
