@@ -16,15 +16,49 @@ const {listingSchema} =require("./schema.js");
 const {reviewSchema} = require("./schema.js");
 const Review =require ("./models/review.js");
 const session = require("express-session");
+const MongoStore = require('connect-mongo');//mongo session store
 const flash= require("connect-flash");
 const passport =require("passport");
 const LocalStrategy = require("passport-local");
 const user = require("./models/user.js")
 
 
+
+//mongoDB connection
+//const MONGO_URL ="mongodb://127.0.0.1:27017/suhana_safar";  this is only used for our local machine
+
+const dbUrl =process.env.ATLASDB_URL
+
+main().then(()=>{
+        console.log("connection is successful");
+})
+.catch(err => console.log(err));
+async function main(){
+    await mongoose.connect(dbUrl); 
+    } 
+
+
+
+
+//mongo session
+const store =MongoStore.create({
+    mongoUrl:dbUrl,
+    crypto:{
+        secret:process.env.SECRET
+    },
+    touchAfter:24*3600,
+
+});
+
+//tell error in mongo session store or not
+store.on("error",()=>{
+    console.log("error in mongo session store",err);
+})
+
 //express session
 const sessionOptions ={
-    secret : "ThisIsSecret",
+    store,
+    secret : process.env.SECRET,
     resave : false,
     saveUninitialized: true,
     cookie: {
@@ -40,6 +74,7 @@ const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 const users = require("./routes/user.js");
 const { privateEncrypt } = require("crypto");
+const { error } = require("console");
 
 app.set("view engine","ejs");
 app.set("views" ,path.join(__dirname,"views"));
@@ -65,17 +100,6 @@ passport.use(new LocalStrategy(user.authenticate()));
 // use static serialize and deserialize of model for passport session support
 passport.serializeUser(user.serializeUser());
 passport.deserializeUser(user.deserializeUser());
-
-
-//mongoDB connection
-const MONGO_URL ="mongodb://127.0.0.1:27017/suhana_safar";
-main().then(()=>{
-        console.log("connection is successful");
-})
-.catch(err => console.log(err));
-async function main(){
-    await mongoose.connect(MONGO_URL); 
-    } 
 
 
 //flash success
