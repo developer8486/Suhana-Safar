@@ -84,10 +84,6 @@ app.engine("ejs",ejsMate); //ejs mate
 app.use(express.static(path.join(__dirname,"/public"))); //for css
 
 
-//root route
-app.get("/",(req,res) =>{
-    res.send ("route is workingggggggggggggg");
-});
 
 app.use(session(sessionOptions));
 app.use(flash());
