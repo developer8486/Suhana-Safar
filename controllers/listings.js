@@ -29,9 +29,13 @@ module.exports.renderEditForm = async (req,res) =>{
     if(!listing){
         req.flash("error","Listing not exist");
         return  res.redirect("/listings");
-
     }
-    res.render("listings/editListing.ejs",{listing})
+
+    let originalImageUrl = listing.image.url;
+    originalImageUrl=originalImageUrl.replace("/upload","/upload/h_200")
+
+
+    res.render("listings/editListing.ejs",{listing, originalImageUrl})
 }
 
 //add new listing in database
@@ -46,9 +50,12 @@ module.exports.SaveNewListingInDatabase=async(req,res,next)=>{
     if(result.error){
         throw new expressError(400 , result.error);
     }*/
+    let url = req.file.path;   //to extract file's URL and NAME
+    let filename = req.file.filename;
 
     const newListing=new Listing(req.body.Listing);
     newListing.owner= req.user._id;//to pass the user name with the created new listing
+    newListing.image ={url , filename}
     await newListing.save();
     req.flash("success","New Listing save");
     res.redirect("/listings");
@@ -60,11 +67,21 @@ module.exports.EditUpdateInDatabase =async(req,res)=>{
     
 
     let {id}= req.params;
+   
 
     //let data= req.body.Listing; //it is also work
     //await Listing.findByIdAndUpdate(id,data);
 
-    await Listing.findByIdAndUpdate(id,{...req.body.Listing});
+    let listing =await Listing.findByIdAndUpdate(id,{...req.body.Listing});
+
+    if(typeof req.file!= "undefined"){
+        let url = req.file.path;   //to extract file's URL and NAME
+        let filename = req.file.filename;
+        listing.image = {url, filename};
+        await listing.save();
+    }
+    
+
     req.flash("success","Listing updated");
     res.redirect(`/listings/${id}`);  
 }

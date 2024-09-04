@@ -7,13 +7,17 @@ const {reviewSchema} = require("../schema.js");
 const Listing =require("../models/listings.js");
 const {isLoggedIn, isOwner, validateListing} =require("../middleware.js");
 const listingController = require("../controllers/listings.js");
-
+const multer = require("multer");
+const {storage} = require("../cloudConfig.js")
+const upload = multer({storage});//to save image in cloudinary slorage
 
    
 router
 .route("/")
 .get(wrapAsync(listingController.index))
-.post(isLoggedIn,validateListing , wrapAsync(listingController.SaveNewListingInDatabase)); 
+.post(isLoggedIn,upload.single("Listing[image]"),validateListing , wrapAsync(listingController.SaveNewListingInDatabase)); 
+
+
 
 router
 .route("/new")
@@ -22,7 +26,7 @@ router
 router
 .route("/:id")
 .get( wrapAsync(listingController.showRoute) )
-.put(isLoggedIn,isOwner,validateListing,wrapAsync(listingController.EditUpdateInDatabase) )
+.put(isLoggedIn,isOwner,upload.single("Listing[image]"),validateListing,wrapAsync(listingController.EditUpdateInDatabase) )
 .delete(isLoggedIn,isOwner,wrapAsync(listingController.DeleteListing))
 
 

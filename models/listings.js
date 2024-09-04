@@ -1,6 +1,7 @@
 const mongoose =require("mongoose");
 const Schema =mongoose.Schema;
 const Review = require("./review.js");
+const { string } = require("joi");
 
 const listingSchema =new Schema({
     title: {
@@ -9,11 +10,15 @@ const listingSchema =new Schema({
     },
     discription : String,
     image :{
-        type:String,
-        default:"https://c4.wallpaperflare.com/wallpaper/150/385/134/trees-design-house-lawn-wallpaper-preview.jpg",
+        url  : String,
+        filename : String,
+
+
+
+        /*default:"https://c4.wallpaperflare.com/wallpaper/150/385/134/trees-design-house-lawn-wallpaper-preview.jpg",
         set : (v) =>
          v===""?
-         "https://c4.wallpaperflare.com/wallpaper/150/385/134/trees-design-house-lawn-wallpaper-preview.jpg" :v 
+         "https://c4.wallpaperflare.com/wallpaper/150/385/134/trees-design-house-lawn-wallpaper-preview.jpg" :v */
         },
         
     price : Number ,
